@@ -9,6 +9,7 @@ struct frame{
 int main(){
     
   #variables
+  int nframes;
   unsigned addr;
   char rw;
   struct frame arr_framenum[/*"Input from user in make file"*/];
@@ -16,7 +17,7 @@ int main(){
   fscanf(file,"%x %c", &addr, &rw);
   
   
-    printf("Total Memory Frames: ",/* Same variable as user inputs*/ );
+    printf("Total Memory Frames: ", nframes/* Same variable as user inputs*/ );
     printf("Events In Trace: ",/* Number of line reads*/ );
     printf("Total Disk Reads: ", );
     printf("Total Disk Writes: ", );
