@@ -1,28 +1,33 @@
 #include "memory_sim.h"
 #include <stdio.h>
 #include <stdlib.h>
-/*struct frame{
-  dirtybit = 0;
-  nframes[]; //? 
-};*/
+#include <stdbool.h>
+
+struct Frame{
+  bool dirtybit;
+  unsigned addr; 
+};
 
 int main(int argc, char *argv[]){
     
   //variables
-  char *trace, *algo, *quiOrDeb;
-  int nframes;
+  char *trace, *algo, *debug;
+  //int nframes;
   unsigned addr;
   char rw;
   int numLines=0;
   char chr;
-trace= argv[1];
-//nframes=atoi(argv[2]);
-//algo=argv[3];
-//quiOrDeb=argv[4];
+  trace= argv[1];
+
+  int nframes = atoi(argv[2]);
+  algo = argv[3];
+  debug = argv[4];
+
+  struct Frame page_table[nframes];
   
-printf("Enter number of frames");
-scanf("%d",&nframes);
-printf("%d", nframes);
+  printf("Enter number of frames");
+  scanf("%d",&nframes);
+  printf("%d", nframes);
   FILE *file;
     
 	if(argc< 3){
@@ -64,4 +69,5 @@ if(file == NULL)
  //   printf("Total Disk Reads: ", );
  //   printf("Total Disk Writes: ", );
     return 0;
+
 }
