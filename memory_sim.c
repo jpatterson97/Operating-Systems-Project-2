@@ -1,27 +1,34 @@
 #include "memory_sim.h"
 #include <stdio.h>
-
+#include <stdlib.h>
 /*struct frame{
   dirtybit = 0;
   nframes[]; //? 
 };*/
 
-int main(){
+int main(int argc, char *argv[]){
     
   //variables
+  char *trace, *algo, *quiOrDeb;
   int nframes;
   unsigned addr;
   char rw;
   int numLines=0;
   char chr;
+trace= argv[1];
+//nframes=atoi(argv[2]);
+//algo=argv[3];
+//quiOrDeb=argv[4];
   
 printf("Enter number of frames");
 scanf("%d",&nframes);
 printf("%d", nframes);
   FILE *file;
     
- 
-    file = fopen("swim.trace", "r");
+	if(argc< 3){
+		printf("Not enough arguments");
+	}	
+    file = fopen(argv[1], "r");
 
 if(file == NULL)
     {
