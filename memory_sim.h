@@ -1,9 +1,9 @@
 #include <stdio.h>
 
-rdm(/* Frame number, addr, rw*/){
+//rdm(/* Frame number, addr, rw*/){
   //randomly selects page to replace
-}
-
+//}
+/*
 lru(){
   //least recently used
 }
@@ -17,3 +17,4 @@ vms(){
 }
 
 //each of these needs to also change the counters accordingly for the r and w
+*/
