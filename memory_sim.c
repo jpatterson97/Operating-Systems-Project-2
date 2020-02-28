@@ -23,6 +23,8 @@ int main(int argc, char *argv[]){
   algo = argv[3];
   debug = argv[4];
 
+  unsigned no_writes, no_reads;
+
   struct Frame page_table[nframes];
   
   printf("Enter number of frames");
