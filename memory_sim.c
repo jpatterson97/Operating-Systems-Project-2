@@ -8,36 +8,36 @@
 
 int main(){
     
-  #variables
-//  int nframes;
+  //variables
+  int nframes;
   unsigned addr;
   char rw;
   int numLines=0;
   char chr;
   
+printf("Enter number of frames");
+scanf("%d",&nframes);
+printf("%d", nframes);
   FILE *file;
     
  
     file = fopen("swim.trace", "r");
- chr = getc(file);
-    if(file == NULL)
+
+if(file == NULL)
     {
         printf("Error opening file\n");
-        exit(1);
+       	return 0;
     }
  
     printf("Testing fscanf() function: \n\n");
  
-    while( fscanf(file, "Event: %x %c", &addr, &rw) != EOF )
+    while( fscanf(file, "%x %c", &addr, &rw) != EOF )
     {
-        if (chr == 'n'){
-            numLines += 1;
-        }
-        //printf("%x %c", addr, rw);
+        numLines++;
+       // printf("%x %c \n", addr, rw);
     }
- 
     fclose(file);
-    return 0;
+   // return 0;
   
   
   
@@ -52,7 +52,8 @@ int main(){
   
   
   //  printf("Total Memory Frames: ", nframes/* Same variable as user inputs*/ );
-    printf("Events In Trace: ", numLines/* Number of line reads*/ );
+    printf("Events In Trace: %d", numLines);
+	printf("\n");
  //   printf("Total Disk Reads: ", );
  //   printf("Total Disk Writes: ", );
     return 0;
