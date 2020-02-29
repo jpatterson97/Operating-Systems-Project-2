@@ -42,14 +42,36 @@ if(file == NULL)
         printf("Error opening file\n");
        	return 0;
     }
- 
+ 	if(algo =="rdm"){
+		algo = 1;	
+	}
+	else if(algo == "lru"){
+		algo = 2;
+	}
+	else if(algo == "fifo"){
+		algo = 3;
+	}
+	else if(algo == "vms"){
+		algo = 4;
+	}
     printf("Testing fscanf() function: \n\n");
- 
-    while( fscanf(file, "%x %c", &addr, &rw) != EOF )
-    {
-        numLines++;
+    //while( fscanf(file, "%x %c", &addr, &rw) != EOF )
+    //{
+        //numLines++;
+	switch(algo){
+		case '1': rdm();
+			break;
+		case '2': lru();
+			break;
+		case '3': fifo();
+			break;
+		case '4': vms();
+			break;
+		default: printf("Not valid input");
+			break;
+	}
        // printf("%x %c \n", addr, rw);
-    }
+    //}
     fclose(file);
    // return 0;
   
