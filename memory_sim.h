@@ -16,21 +16,30 @@ struct Frame page_table[nframes];
 
 void fifo(){
 	//first in first out
+	int readCount, writeCount, *p;
+	*p = page_table;
 	while(fscanf(file, "%x %c", &addr, &rw) != EOF)
 	{
 		numLines++;
-		if(rw == 'W'){
-			dirtybit=1;	
+		
+		for(int i=0; i < nframes; i++){
+			if(page_table[i].address == addr){
+				if(rw == 'W'){
+					dirtybit=1;	
+				}
+				break;
+			}
 		}
 		for(int i=0; i < nframes; i++){
-			if(page_table[i].address == addr)
-				break;
-			else if (page_table==0){
-				page_table[i] = addr;
-        			break;
+			if(page_table[i] == 0){
+				page_table[i].address = addr;
+				//break;
 			}
-			else
+			else{
 				
+			}
+		}
+		
 		
 	}
 }
