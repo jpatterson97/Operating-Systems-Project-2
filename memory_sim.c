@@ -21,7 +21,7 @@ int main(int argc, char *argv[]){
 
   int nframes = atoi(argv[2]);
   algo = argv[3];
-  debug = argv[4];
+  //debug = argv[4];
 
   unsigned no_writes, no_reads;
 
