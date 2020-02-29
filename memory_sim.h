@@ -24,13 +24,38 @@ void fifo(){
 		
 		for(int i=0; i < nframes; i++){
 			if(page_table[i].address == addr){
-				if(rw == 'W'){
-					dirtybit=1;	
+				if(rw=='W"){
+				   	dirtybit=1;
+				   found =1;	
+				   break;
 				}
-				break;
 			}
 		}
-		for(int i=0; i < nframes; i++){
+			if (found==0){
+				for(int i=0; i < nframes; i++){
+					if(page_table[i] == 0){
+						page_table[i].address = addr;
+						readcount++;
+						if(rw =='W')
+							dirtybit=1;
+							break;
+					else{
+						go to where pointer is
+						if (dirtybit == 1)
+							writecount ++;
+						readcount ++;
+						if (pointer Is at last frame)
+							p++;
+						else
+							p goes back to beginning (page_table[0]
+										  
+					}
+				}
+				
+			}
+		}
+		
+		/*for(int i=0; i < nframes; i++){
 			if(page_table[i] == 0){
 				page_table[i].address = addr;
 				//break;
@@ -38,7 +63,7 @@ void fifo(){
 			else{
 				
 			}
-		}
+		}*/
 		
 		
 	}
