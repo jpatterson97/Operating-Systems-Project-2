@@ -2,18 +2,19 @@
 
 struct Frame{
 	bool dirtybit;
-	unsigned addr;
+	unsigned address;
 };
 
-//rdm(/* Frame number, addr, rw*/){
+struct Frame page_table[nframes];
+//void rdm(/* Frame number, addr, rw*/){
   //randomly selects page to replace
 //}
 
-//lru(){
+//void lru(){
   //least recently used
 //}
 
-fifo(){
+void fifo(){
 	//first in first out
 	while(fscanf(file, "%x %c", &addr, &rw) != EOF)
 	{
@@ -21,12 +22,20 @@ fifo(){
 		if(rw == 'W'){
 			dirtybit=1;	
 		}
-		
+		for(int i=0; i < nframes; i++){
+			if(page_table[i].address == addr)
+				break;
+			else if (page_table==0){
+				page_table[i] = addr;
+        			break;
+			}
+			else
+				
 		
 	}
 }
 
-//vms(){
+//void vms(){
   //second chance page replacement policy
 //}
 
