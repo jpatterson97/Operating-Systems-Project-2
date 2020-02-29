@@ -22,6 +22,7 @@ fifo(){
 			dirtybit=1;	
 		}
 		
+		
 	}
 }
 
