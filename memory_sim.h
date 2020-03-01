@@ -22,13 +22,15 @@ struct Frame page_table[nframes];
 void lru(){
  	//least recently used
 	struct node *p;
-	struct node *q;
+	//struct node *q;
 	while(fscanf(file, "%x %c", &addr, &rw) != EOF)
 		{
 			//adds each line up
 			numLines++;
-			unsigned n= addr>>12;
-			
+			for(int i=0; i< nframes; i++){
+				unsigned n= addr>>12;
+				page_table[i].address= n;
+			}
 			//for loop goes through first to see if it finds the value already in the frames
 			//for(int i=0; i < nframes; i++){
 			for(p->id = 0; p->id <nframes; p = p->next)
@@ -101,6 +103,11 @@ void fifo(){
 	{
 		//adds each line up
 		numLines++;
+		//convert to 5 bits to use
+		for(int i=0; i< nframes; i++){
+			unsigned n= addr>>12;
+			page_table[i].address= n;
+		}
 		//for loop goes through first to see if it finds the value already in the frames
 		for(int i=0; i < nframes; i++){
 			//if it finds that address already in the frames
