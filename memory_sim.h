@@ -40,7 +40,7 @@ void lru(){
 			}
 			//for loop goes through first to see if it finds the value already in the frames
 			//for(int i=0; i < nframes; i++){
-			for(p->id = 0; p->id <nframes; p = p->next)
+			for(p->id = 0; p->id <nframes; p = p->next){
 				//if it finds that address already in the frames
 				if(node->hexAdd == addr){
 					//it will check if it had a W (on original line in trace file)
