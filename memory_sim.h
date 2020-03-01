@@ -58,7 +58,7 @@ void lru(){
 			if (found==0){
 				//loop will go through frames again
 				//for(int i=0; i < nframes; i++){
-				for(p->id =0; p->id < nframes; p = p->next)
+				for(p->id =0; p->id < nframes; p = p->next){
 					//checks if the frame is empty
 					if(node->hexAdd == NULL){
 						//if it is then put the address in first empty frame found
