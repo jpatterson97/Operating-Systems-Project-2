@@ -6,14 +6,86 @@ struct Frame{
 	unsigned address;
 };
 
+struct node{
+	unsigned hexAdd;
+	bool dirty;
+	struct node *next;
+	struct node *prev;
+};
+
 struct Frame page_table[nframes];
 //void rdm(/* Frame number, addr, rw*/){
   //randomly selects page to replace
 //}
 
-//void lru(){
-  //least recently used
-//}
+void lru(){
+ 	//least recently used
+	struct node *p;
+	struct node *q;
+	while(fscanf(file, "%x %c", &addr, &rw) != EOF)
+		{
+			//adds each line up
+			numLines++;
+			int n= addr>>12;
+			//for loop goes through first to see if it finds the value already in the frames
+			//for(int i=0; i < nframes; i++){
+			for(p=node; p!= NULL; p = p->next)
+				//if it finds that address already in the frames
+				if(node->hexAdd == addr){
+					//it will check if it had a W (on original line in trace file)
+					if(rw=='W"){
+					   //make the bit dirty
+					   node.dirty=1;
+					   //and change it to found
+					   found =1;
+					   //break out of this for loop
+					   break;
+					}
+				}
+			}
+			//says if its not found in the frames (which this should be skipped if it went through that first loop and did find it
+			if (found==0){
+				//loop will go through frames again
+				//for(int i=0; i < nframes; i++){
+				for(p=node; p!= NULL; p = p->next)
+					//checks if the frame is empty
+					if(node->hexAdd == NULL){
+						//if it is then put the address in first empty frame found
+						node->hexAdd = addr;
+						//increase readcount
+						readcount++;
+						//check if the address is a W
+						if(rw =='W'){
+							//change bit to dirty
+							node->dirty=1;
+							//break out of this for loop
+							break;
+						}
+					//if all of them are full
+					else{
+						//go to where pointer is (in beginning it should be first frame)
+						go to where pointer is
+						//if dirty bit of that frame is dirty add to write counter
+						if (node->dirty == 1){
+							writecount ++;
+						}
+						//add to read counter
+						readcount ++;
+						//if pointer is not at the last frame move pointer to next frame 
+						if (pointer is not at the last frame){
+							q=q->next;
+						}
+						//if pointer is at last frame move it back to beginning
+						else{
+							p goes back to beginning (page_table[0])
+						}			  
+					}
+				}
+			}
+			//reset found back to 0 for the next address
+			found =0;
+		}
+}
 
 
 //first in first out
