@@ -21,8 +21,15 @@ struct Frame page_table[nframes];
 
 void lru(){
  	//least recently used
+	struct node *frameset;
 	struct node *p;
-	//struct node *q;
+	//making this the size of the frames inserting new empty nodes
+	for(int i=0; i<nframes;i++){
+		p=malloc(size(struct node);
+		p->id= i;
+		p->next= frameset;
+		return p;
+	}
 	while(fscanf(file, "%x %c", &addr, &rw) != EOF)
 		{
 			//adds each line up
