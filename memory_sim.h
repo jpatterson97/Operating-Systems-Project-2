@@ -9,6 +9,7 @@ struct Frame{
 struct node{
 	unsigned hexAdd;
 	bool dirty;
+	int id;
 	struct node *next;
 	struct node *prev;
 };
@@ -29,13 +30,13 @@ void lru(){
 			int n= addr>>12;
 			//for loop goes through first to see if it finds the value already in the frames
 			//for(int i=0; i < nframes; i++){
-			for(p=node; p!= NULL; p = p->next)
+			for(p->id = 0; p->id <nframes; p = p->next)
 				//if it finds that address already in the frames
 				if(node->hexAdd == addr){
 					//it will check if it had a W (on original line in trace file)
 					if(rw=='W"){
 					   //make the bit dirty
-					   node.dirty=1;
+					   node->dirty=1;
 					   //and change it to found
 					   found =1;
 					   //break out of this for loop
@@ -47,7 +48,7 @@ void lru(){
 			if (found==0){
 				//loop will go through frames again
 				//for(int i=0; i < nframes; i++){
-				for(p=node; p!= NULL; p = p->next)
+				for(p->id =0; p->id < nframes; p = p->next)
 					//checks if the frame is empty
 					if(node->hexAdd == NULL){
 						//if it is then put the address in first empty frame found
