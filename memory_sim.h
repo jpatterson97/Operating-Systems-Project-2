@@ -27,7 +27,8 @@ void lru(){
 		{
 			//adds each line up
 			numLines++;
-			int n= addr>>12;
+			unsigned n= addr>>12;
+			
 			//for loop goes through first to see if it finds the value already in the frames
 			//for(int i=0; i < nframes; i++){
 			for(p->id = 0; p->id <nframes; p = p->next)
