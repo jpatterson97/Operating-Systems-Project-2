@@ -19,8 +19,7 @@ void vms();
 void fifo();
 void lru();
 
-int main(int argc, char *argv[]){
-    
+int main(int argc, char *argv[]){    
   //variables
   char *trace, *algo, *debug;
   unsigned addr;
@@ -28,54 +27,31 @@ int main(int argc, char *argv[]){
   int numLines=0;
   char chr;
   trace= argv[1];
-
   int nframes = atoi(argv[2]);
-  algo = argv[3];
+  algo = argv[3][0];
   //debug = argv[4];
-
-  unsigned no_writes, no_reads;
-
+  int no_writes, no_reads;
+if(argc< 3){
+		printf("Not enough arguments");
+	}	
   struct Frame page_table[nframes];
   
   printf("Enter number of frames");
   scanf("%d",&nframes);
   printf("%d", nframes);
-  FILE *file;
-    
-	if(argc< 3){
-		printf("Not enough arguments");
-	}	
-    file = fopen(argv[1], "r");
 
-if(file == NULL)
-    {
-        printf("Error opening file\n");
-       	return 0;
-    }
- 	if(algo =="rdm"){
-		algo = 1;	
-	}
-	else if(algo == "lru"){
-		algo = 2;
-	}
-	else if(algo == "fifo"){
-		algo = 3;
-	}
-	else if(algo == "vms"){
-		algo = 4;
-	}
     printf("Testing fscanf() function: \n\n");
     //while( fscanf(file, "%x %c", &addr, &rw) != EOF )
     //{
         //numLines++;
 	switch(algo){
-		case '1': rdm();
+		case 'r': rdm();
 			break;
-		case '2': lru();
+		case 'l': lru();
 			break;
-		case '3': fifo();
+		case 'f': fifo();
 			break;
-		case '4': vms();
+		case 'v': vms();
 			break;
 		default: printf("Not valid input");
 			break;
@@ -115,6 +91,13 @@ void fifo(){
 	int readcount, writecount, *p, found;
 	//pointer to the first element of frame array
 	p = page_table;
+	FILE *file;
+	file = fopen(argv[1], "r");
+	if(file == NULL)
+	{
+        	printf("Error opening file\n");
+       		return 0;
+	}
 	//while loop goes through each line in the trace file
 	while(fscanf(file, "%x %c", &addr, &rw) != EOF)
 	{
@@ -189,6 +172,13 @@ void lru(){
  	//least recently used
 	struct node *frameset;
 	struct node *p;
+	FILE *file;
+	file = fopen(argv[1], "r");
+	if(file == NULL)
+	{
+        	printf("Error opening file\n");
+       		return 0;
+	}
 	//making this the size of the frames inserting new empty nodes
 	for(int i=0; i<nframes;i++){
 		p=malloc(size(struct node);
