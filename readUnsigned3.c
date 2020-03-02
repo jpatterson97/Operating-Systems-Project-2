@@ -94,7 +94,7 @@ void fifo(char* tracefile, int nframes){
 			//loop will go through frames again
 			for(int i=0; i < nframes; i++){
 				//checks if the frame is empty
-				if(page_table[i] == 0){
+				if(page_table[i].address == 0){
 					//if it is then put the address in first empty frame found
 					page_table[i].address = n;
 					//increase readcount
@@ -106,7 +106,7 @@ void fifo(char* tracefile, int nframes){
 						//break out of this for loop
 						break;
 					}
-				//if all of them are full
+				}//if all of them are full
 				else{
 					//go to where pointer is (in beginning it should be first frame)
 					//go to where pointer is
