@@ -11,9 +11,9 @@ void vms();
 
 struct Frame{
    unsigned address;
-   char read_write;
+   //char read_write;
    int dirty;
-}pg;
+};
 
 int main(int argc, char *argv[])
 {
@@ -73,10 +73,7 @@ void fifo(char* tracefile, int nframes){
 		//adds each line up
 		numLines++;
 		//convert to 5 bits to use
-		//for(int i=0; i< nframes; i++){
-		//	unsigned n= addr>>12;
-		//	page_table[i].address= n;
-		//}
+		unsigned n= addr>>12;
 		//for loop goes through first to see if it finds the value already in the frames
 		for(int i=0; i < nframes; i++){
 			//if it finds that address already in the frames
@@ -84,7 +81,7 @@ void fifo(char* tracefile, int nframes){
 				//it will check if it had a W (on original line in trace file)
 				if(rw=='W'){
 				   //make the bit dirty
-				   pg.dirty=1;
+				   page_table[i].dirty=1;
 				   //and change it to found
 				   found =1;
 				   //break out of this for loop
@@ -105,7 +102,7 @@ void fifo(char* tracefile, int nframes){
 					//check if the address is a W
 					if(rw =='W'){
 						//change bit to dirty
-						pg.dirty=1;
+						page_table[i].dirty=1;
 						//break out of this for loop
 						break;
 					}
@@ -114,7 +111,7 @@ void fifo(char* tracefile, int nframes){
 					//go to where pointer is (in beginning it should be first frame)
 					//go to where pointer is
 					//if dirty bit of that frame is dirty add to write counter
-					if (pg.dirty == 1){
+					if (page_table[i].dirty == 1){
 						writecount ++;
 					}
 					//add to read counter
