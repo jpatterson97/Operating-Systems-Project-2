@@ -52,17 +52,20 @@ int main(int argc, char *argv[])
    return 0;
 }
 
-void fifo(char* tracefile, int nframes,){
+void fifo(char* tracefile, int nframes){
 	//variables	
-	int readcount, writecount, *p, found, numLines;
+	int readcount, writecount, /**p,*/ found, numLines;
+	unsigned addr;
+	char rw;
 	//pointer to the first element of frame array
-	p = pg;
+	//p = pg;
+	struct Frame page_table[nframes];
 	FILE *file;
 	file = fopen(tracefile, "r");
 	if(file == NULL)
 	{
         	printf("Error opening file\n");
-       		return 0;
+       		
 	}
 	//while loop goes through each line in the trace file
 	while(fscanf(file, "%x %c", &addr, &rw) != EOF)
@@ -70,16 +73,16 @@ void fifo(char* tracefile, int nframes,){
 		//adds each line up
 		numLines++;
 		//convert to 5 bits to use
-		for(int i=0; i< nframes; i++){
-			unsigned n= addr>>12;
-			pg[i].address= n;
-		}
+		//for(int i=0; i< nframes; i++){
+		//	unsigned n= addr>>12;
+		//	page_table[i].address= n;
+		//}
 		//for loop goes through first to see if it finds the value already in the frames
 		for(int i=0; i < nframes; i++){
 			//if it finds that address already in the frames
-			if(pg[i].address == n){
+			if(page_table[i].address == n){
 				//it will check if it had a W (on original line in trace file)
-				if(rw=='W"){
+				if(rw=='W'){
 				   //make the bit dirty
 				   pg.dirty=1;
 				   //and change it to found
@@ -94,9 +97,9 @@ void fifo(char* tracefile, int nframes,){
 			//loop will go through frames again
 			for(int i=0; i < nframes; i++){
 				//checks if the frame is empty
-				if(pg[i] == 0){
+				if(page_table[i] == 0){
 					//if it is then put the address in first empty frame found
-					pg[i].address = n;
+					page_table[i].address = n;
 					//increase readcount
 					readcount++;
 					//check if the address is a W
