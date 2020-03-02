@@ -151,14 +151,13 @@ void rdm(){
 
 void lru(){
    //least recently used
-	struct node *frameset;
-	struct node *p;
+	struct node *tempnode;
 	//making this the size of the frames inserting new empty nodes
 	for(int i=0; i<nframes;i++){
-		p=malloc(size(struct node);
+		struct node *p=malloc(size(struct node));
 		p->id= i;
-		p->next= frameset;
-		return p;
+		tempnode->next= next;
+		tempnode=next;
 	}
 	while(fscanf(file, "%x %c", &addr, &rw) != EOF)
 		{
@@ -174,7 +173,7 @@ void lru(){
 				//if it finds that address already in the frames
 				if(node->hexAdd == addr){
 					//it will check if it had a W (on original line in trace file)
-					if(rw=='W"){
+					if(rw=='W'){
 					   //make the bit dirty
 					   node->dirty=1;
 					   //and change it to found
