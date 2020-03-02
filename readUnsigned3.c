@@ -4,7 +4,7 @@
 
 #define MILL 1000000
 
-void fifo(char* tracefile, int nframes, char bugtype);
+void fifo();
 void rdm();
 void lru();
 void vms();
@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
    }
 // end argument variables
       switch(runType){
-	case 'f': fifo(traceFile, nFrames, bugType);
+	case 'f': fifo(traceFile, nFrames);
 	   break;
 	case 'r': rdm();
 	   break;
@@ -52,50 +52,93 @@ int main(int argc, char *argv[])
    return 0;
 }
 
-void fifo(char* tracefile, int nframes, char bugtype){
-   FILE *fp;		// file pointer
-   fp = fopen(tracefile, "r"); 		// read file
-
-   if (fp == NULL)
-   {
-      perror("Error while opening the file.\n");
-      exit(EXIT_FAILURE);
-   }
-
-   printf("FIFO");
-// function variables
-   int i = 0, j = 0, count = 0, countR = 0, countW = 0;
-   char rw;
-   char R = 'R';
-   char W = 'W';
-   struct Frame numFrames[nframes];
-   unsigned fromfile;
-   unsigned n;
-
-   while(fscanf(fp, "%x %c", &fromfile, &rw) != EOF){		// read and put file data into character array
-   //fscanf(fp, "%x %c", &fromFile, &rw);   
-     n = fromfile >> 12;
-     numFrames[i].address = n;
-
-     printf("%d\t%x  %c\n",i, numFrames[i].address, rw );
-     numFrames[i].read_write = rw;
-     if((numFrames[i].read_write == R) == 1){
-        countR++;
-     }
-     if((numFrames[i].read_write == W) == 1){
-        countW++;
-     }
-	i++;
-	count++;
-  }	// end while(fscanf(fp, "%s %c", &fromFile, &rw))
-   printf("address: %x \n", numFrames[0].address);
-   printf("action: %c \n", numFrames[0].read_write);	
+void fifo(char* tracefile, int nframes,){
+	//variables	
+	int readcount, writecount, *p, found, numLines;
+	//pointer to the first element of frame array
+	p = pg;
+	FILE *file;
+	file = fopen(tracefile, "r");
+	if(file == NULL)
+	{
+        	printf("Error opening file\n");
+       		return 0;
+	}
+	//while loop goes through each line in the trace file
+	while(fscanf(file, "%x %c", &addr, &rw) != EOF)
+	{
+		//adds each line up
+		numLines++;
+		//convert to 5 bits to use
+		for(int i=0; i< nframes; i++){
+			unsigned n= addr>>12;
+			pg[i].address= n;
+		}
+		//for loop goes through first to see if it finds the value already in the frames
+		for(int i=0; i < nframes; i++){
+			//if it finds that address already in the frames
+			if(pg[i].address == n){
+				//it will check if it had a W (on original line in trace file)
+				if(rw=='W"){
+				   //make the bit dirty
+				   pg.dirty=1;
+				   //and change it to found
+				   found =1;
+				   //break out of this for loop
+				   break;
+				}
+			}
+		}
+		//says if its not found in the frames (which this should be skipped if it went through that first loop and did find it
+		if (found==0){
+			//loop will go through frames again
+			for(int i=0; i < nframes; i++){
+				//checks if the frame is empty
+				if(pg[i] == 0){
+					//if it is then put the address in first empty frame found
+					pg[i].address = n;
+					//increase readcount
+					readcount++;
+					//check if the address is a W
+					if(rw =='W'){
+						//change bit to dirty
+						pg.dirty=1;
+						//break out of this for loop
+						break;
+					}
+				//if all of them are full
+				else{
+					//go to where pointer is (in beginning it should be first frame)
+					//go to where pointer is
+					//if dirty bit of that frame is dirty add to write counter
+					if (pg.dirty == 1){
+						writecount ++;
+					}
+					//add to read counter
+					readcount ++;
+					//if pointer is not at the last frame move pointer to next frame 
+					//if (pointer is not at the last frame){
+					//	p++;
+					//}
+					//if pointer is at last frame move it back to beginning
+					//else{
+					//	p goes back to beginning (page_table[0])
+					//}			  
+				}
+			}
+		}
+		//reset found back to 0 for the next address
+		found =0;
+	}
+	fclose(file);
+//printf("address: %x \n", numFrames[0].address);
+  // printf("action: %c \n", numFrames[0].read_write);	
    printf("total memory frames: %d\n", nframes);
-   printf("events in trace: %d\n", count);
-   printf("total disk reads:  %d\n", countR);
-   printf("total disk writes: %d\n", countW);
-   fclose(fp);
+   printf("events in trace: %d\n", numLines);
+   printf("total disk reads:  %d\n", readcount);
+   printf("total disk writes: %d\n", writecount);
 }
+
 void rdm(){
 	printf("RDM");
 }
