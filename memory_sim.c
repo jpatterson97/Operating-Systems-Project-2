@@ -4,7 +4,8 @@
 
 struct Frame{
   bool dirtybit;
-  unsigned addr; 
+  unsigned addr;
+  char rw;
 };
 struct node{
 	unsigned hexAdd;
@@ -12,6 +13,7 @@ struct node{
 	int id;
 	struct node *next;
 	struct node *prev;
+	char rw;
 };
 
 void rdm();
@@ -21,16 +23,16 @@ void lru();
 
 int main(int argc, char *argv[]){    
   //variables
-  char *trace, *algo, *debug;
-  unsigned addr;
-  char rw;
-  int numLines=0;
-  char chr;
+	int numLines=0;
+	int no_writes=0, no_reads=0;
+  char *trace, *algo, *debug; 
+  
+  //char chr;
   trace= argv[1];
   int nframes = atoi(argv[2]);
   algo = argv[3][0];
   //debug = argv[4];
-  int no_writes, no_reads;
+  
 if(argc< 3){
 		printf("Not enough arguments");
 	}	
@@ -164,6 +166,7 @@ void fifo(){
 		//reset found back to 0 for the next address
 		found =0;
 	}
+	fclose(file);
 }
 
 
@@ -252,6 +255,7 @@ void lru(){
 			//reset found back to 0 for the next address
 			found =0;
 		}
+		fclose(file);
 }
 
 
