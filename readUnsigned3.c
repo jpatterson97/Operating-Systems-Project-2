@@ -1,12 +1,13 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #define MILL 1000000
 
-void fifo();
+void fifo(char* tracefile, int nframes);
 void rdm();
-void lru();
+void lru(char* tracefile, int nframes);
 void vms();
 
 struct Frame{
@@ -49,7 +50,7 @@ int main(int argc, char *argv[])
 	   break;
 	case 'r': rdm();
 	   break;
-	case 'l': lru();
+	case 'l': lru(tracefile, nframes);
 	   break;
 	case 'v': vms();
 	   break;
@@ -62,7 +63,7 @@ int main(int argc, char *argv[])
 
 void fifo(char* tracefile, int nframes){
 	//variables	
-	int readcount, writecount, /**p,*/ found, numLines;
+	int readcount, writecount, found, numLines;
 	unsigned addr;
 	char rw;
 	//pointer to the first element of frame array
@@ -118,7 +119,7 @@ void fifo(char* tracefile, int nframes){
 				}//if all of them are full
 				else{
 					//go to where pointer is (in beginning it should be first frame)
-					p= page_table;
+					
 					//if dirty bit of that frame is dirty add to write counter
 					if (page_table[i].dirty == 1){
 						writecount ++;
@@ -149,8 +150,19 @@ void rdm(){
 	printf("RDM");
 }
 
-void lru(){
+void lru(char* tracefile, int nframes){
    //least recently used
+	//variables	
+	int readcount, writecount, found, numLines;
+	unsigned addr;
+	char rw;
+	FILE *file;
+	file = fopen(tracefile, "r");
+	if(file == NULL)
+	{
+        	printf("Error opening file\n");
+       		
+	}
 	struct node *tempnode;
 	//making this the size of the frames inserting new empty nodes
 	for(int i=0; i<nframes;i++){
@@ -165,17 +177,17 @@ void lru(){
 			numLines++;
 			for(int i=0; i< nframes; i++){
 				unsigned n= addr>>12;
-				page_table[i].address= n;
+				p->address= n;
 			}
 			//for loop goes through first to see if it finds the value already in the frames
 			//for(int i=0; i < nframes; i++){
 			for(p->id = 0; p->id <nframes; p = p->next){
 				//if it finds that address already in the frames
-				if(node->hexAdd == addr){
+				if(p->hexAdd == addr){
 					//it will check if it had a W (on original line in trace file)
 					if(rw=='W'){
 					   //make the bit dirty
-					   node->dirty=1;
+					   p->dirty=1;
 					   //and change it to found
 					   found =1;
 					   //break out of this for loop
@@ -189,35 +201,33 @@ void lru(){
 				//for(int i=0; i < nframes; i++){
 				for(p->id =0; p->id < nframes; p = p->next){
 					//checks if the frame is empty
-					if(node->hexAdd == NULL){
+					if(p->hexAdd == NULL){
 						//if it is then put the address in first empty frame found
-						node->hexAdd = addr;
+						p->hexAdd = addr;
 						//increase readcount
 						readcount++;
 						//check if the address is a W
 						if(rw =='W'){
 							//change bit to dirty
-							node->dirty=1;
+							p->dirty=1;
 							//break out of this for loop
 							break;
 						}
 					//if all of them are full
 					else{
-						//go to where pointer is (in beginning it should be first frame)
-						go to where pointer is
 						//if dirty bit of that frame is dirty add to write counter
-						if (node->dirty == 1){
+						if (p->dirty == 1){
 							writecount ++;
 						}
 						//add to read counter
 						readcount ++;
 						//if pointer is not at the last frame move pointer to next frame 
-						if (pointer is not at the last frame){
-							q=q->next;
+						if (p->id < nframes){
+							p=p->next;
 						}
 						//if pointer is at last frame move it back to beginning
 						else{
-							p goes back to beginning (page_table[0])
+							p
 						}			  
 					}
 				}
@@ -225,7 +235,10 @@ void lru(){
 			//reset found back to 0 for the next address
 			found =0;
 		}
-	
+	  printf("Total Memory Frames: %d\n", nframes);
+   printf("Events in Trace: %d\n", numLines);
+   printf("Total Disk Reads:  %d\n", readcount);
+   printf("Total Disk Writes: %d\n", writecount);
 	
 }
 void vms(){
