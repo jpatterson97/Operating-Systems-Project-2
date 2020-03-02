@@ -165,15 +165,16 @@ void rdm(char* tracefile, int nframes, char bugtype){
      		n = fromfile >> 12;		// shift positions right
      		oneFrame.address = n;		// put it in oneFrame
      		oneFrame.read_write = rw;
-     		if(rw == W){
-        		oneFrame.dirty = 1;
-     		} 
-		else { 
-			oneFrame.dirty = 0; 
-		}
-     		if(bugtype == bug[0]){
-			printf("%d.\taddr %x  r/w %c\t dirty %d \n",i, oneFrame.address,  oneFrame.read_write, oneFrame.dirty);
-     		}
+     		for(int i=0; i<nframes;i++){
+			if(oneFrame.read_write == W){
+        			oneFrame.dirty = 1;
+     			} 
+			else { 
+				oneFrame.dirty = 0; 
+			}
+     			if(bugtype == bug[0]){
+				printf("%d.\taddr %x  r/w %c\t dirty %d \n",i, oneFrame.address,  oneFrame.read_write, oneFrame.dirty);
+     			}
      		for(i;i<nframes;i++){
 			if(i >= nframes){			// if i < nframes, assign oneFrame to numFrames
 				j = (rand() % (upper - lower + 1)) + lower; 
@@ -185,9 +186,8 @@ void rdm(char* tracefile, int nframes, char bugtype){
 		// if i >= nframes, then put new value in the frame.
 		//	for(j = 0 ; j < random; j++ ){				// go through numFrames until j = i
 		while(numFrames[j].address != oneFrame.address){	// if oneFrame.address == numFames[i].address
-	   		morFrames[j] = numFrames[j];			// assign value at j to morFrames[j].address
-	   		j++;
-		}
+	  	   	j++;
+		
 		i=0;
 		if((numFrames[j].address == oneFrame.address) && (numFrames[j].read_write == oneFrame.read_write) == 1){
 			// if address equal and read_write, swap value: o -> n -> m
@@ -215,13 +215,16 @@ void rdm(char* tracefile, int nframes, char bugtype){
 			if(numFrames[i].read_write == W){
 	   			numFrames[i].dirty = 1;
 	   			countW++;
+				printf("WRITE COUNT: %d", countW);
 			}	// if it's W, then it's dirty
-		else { 
-	   		numFrames[i].dirty = 0;
-	   		countR++;
+			else { 
+	   			numFrames[i].dirty = 0;
+	   			countR++;
+			}
      		}
 	i++;
 	count++;
+	}
      	
    	}	// end while(fscanf(fp, "%s %c", &fromFile, &rw))
    	printf("total memory frames: %d\n", nframes);
