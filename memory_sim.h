@@ -104,7 +104,7 @@ void fifo(){
 	//variables	
 	int readcount, writecount, *p, found;
 	//pointer to the first element of frame array
-	*p = page_table;
+	p = page_table;
 	//while loop goes through each line in the trace file
 	while(fscanf(file, "%x %c", &addr, &rw) != EOF)
 	{
