@@ -143,7 +143,8 @@ void rdm(char* tracefile, int nframes, char bugtype){
       		exit(EXIT_FAILURE);
    	}
 	// function variables
-   	int i = 0, j = 0, count = 0, countR = 0, countW = 0, upper = 0, lower = 0;
+   	int i = 0, count = 0, countR = 0, countW = 0, upper = 0, lower = 0;
+	
    	char rw;
    	char R = 'R';
    	char W = 'W';
@@ -153,7 +154,7 @@ void rdm(char* tracefile, int nframes, char bugtype){
    	unsigned fromfile;
    	unsigned n;
    	char bug[2] = {'d', 'q'};
-   	int random;
+   	int random, found;
    	srand(time(0));
    	upper = 13;
    	lower = 3;
@@ -166,21 +167,30 @@ void rdm(char* tracefile, int nframes, char bugtype){
      		oneFrame.address = n;		// put it in oneFrame
      		oneFrame.read_write = rw;
      		for(int i=0; i<nframes;i++){
-			if(oneFrame.read_write == W){
-        			oneFrame.dirty = 1;
-     			} 
-			else { 
-				oneFrame.dirty = 0; 
+			if(oneFrame.address == n)
+				if(oneFrame.read_write == W){
+        				oneFrame.dirty = 1;
+					found=1;
+     				} 
+				else { 
+					oneFrame.dirty = 0; 
+				}
 			}
      			if(bugtype == bug[0]){
 				printf("%d.\taddr %x  r/w %c\t dirty %d \n",i, oneFrame.address,  oneFrame.read_write, oneFrame.dirty);
      			}
-     		for(i;i<nframes;i++){
-			if(i >= nframes){			// if i < nframes, assign oneFrame to numFrames
-				j = (rand() % (upper - lower + 1)) + lower; 
-     				if(bugtype == bug[0]){
-					printf("Random number: %d \n", j);	
-     				}
+		}
+		//if not found 
+		if(found==0){
+			//loop thru frames again
+			for(i;i<nframes;i++){
+				int j = (rand() % (upper - lower + 1)) + lower;
+				if( j == 0){			// if i < nframes, assign oneFrame to numFrames
+					 
+     					if(bugtype == bug[0]){
+						printf("Random number: %d \n", j);	
+     					}
+				}
 			}
 		}
 		// if i >= nframes, then put new value in the frame.
