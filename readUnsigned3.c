@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 	   break;
 	case 'r': rdm();
 	   break;
-	case 'l': lru(tracefile, nframes);
+	case 'l': lru(traceFile, nFrames);
 	   break;
 	case 'v': vms();
 	   break;
@@ -166,7 +166,7 @@ void lru(char* tracefile, int nframes){
 	struct node *tempnode;
 	//making this the size of the frames inserting new empty nodes
 	for(int i=0; i<nframes;i++){
-		struct node *p=malloc(size(struct node));
+		struct node *p=malloc(sizeof(struct node));
 		p->id= i;
 		tempnode->next= next;
 		tempnode=next;
@@ -175,10 +175,9 @@ void lru(char* tracefile, int nframes){
 		{
 			//adds each line up
 			numLines++;
-			for(int i=0; i< nframes; i++){
-				unsigned n= addr>>12;
-				p->address= n;
-			}
+			unsigned n= addr>>12;
+			p->hexAdd= n;
+			
 			//for loop goes through first to see if it finds the value already in the frames
 			//for(int i=0; i < nframes; i++){
 			for(p->id = 0; p->id <nframes; p = p->next){
@@ -202,8 +201,12 @@ void lru(char* tracefile, int nframes){
 				for(p->id =0; p->id < nframes; p = p->next){
 					//checks if the frame is empty
 					if(p->hexAdd == NULL){
-						//if it is then put the address in first empty frame found
-						p->hexAdd = addr;
+						//if it is then put the address in the front of the linked list
+						
+						struct node *newfront;
+						newfront = malloc(sizeof(struct node));
+						newfront->hexAdd = addr;
+						newfront->next=p;
 						//increase readcount
 						readcount++;
 						//check if the address is a W
@@ -215,12 +218,12 @@ void lru(char* tracefile, int nframes){
 						}
 					//if all of them are full
 					else{
-						//if dirty bit of that frame is dirty add to write counter
+						/*//if dirty bit of that frame is dirty add to write counter
 						if (p->dirty == 1){
-							writecount ++;
+							writecount++;
 						}
 						//add to read counter
-						readcount ++;
+						readcount++;
 						//if pointer is not at the last frame move pointer to next frame 
 						if (p->id < nframes){
 							p=p->next;
@@ -228,7 +231,7 @@ void lru(char* tracefile, int nframes){
 						//if pointer is at last frame move it back to beginning
 						else{
 							p
-						}			  
+						}*/			  
 					}
 				}
 			}
