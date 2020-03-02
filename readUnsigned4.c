@@ -1,7 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-
+#include <time.h>
  
 void fifo(char* tracefile, int nframes, char bugtype);
 void rdm(char* tracefile, int nframes, char bugtype);
@@ -165,17 +165,20 @@ void rdm(char* tracefile, int nframes, char bugtype){
      if(bugtype == bug[0]){
 	printf("%d.\taddr %x  r/w %c\t dirty %d \n",i, oneFrame.address,  oneFrame.read_write, oneFrame.dirty);
      }
-     if(i >= nframes){			// if i < nframes, assign oneFrame to numFrames
+     for(i;i<nframes;i++){
+	if(i >= nframes){			// if i < nframes, assign oneFrame to numFrames
 	j = (rand() % (upper - lower + 1)) + lower; 
      if(bugtype == bug[0]){
 	printf("Random number: %d \n", j);	
      }
+}}
 	// if i >= nframes, then put new value in the frame.
 //	for(j = 0 ; j < random; j++ ){				// go through numFrames until j = i
 	while(numFrames[j].address != oneFrame.address){	// if oneFrame.address == numFames[i].address
 	   morFrames[j] = numFrames[j];			// assign value at j to morFrames[j].address
 	   j++;
 	}
+	i=0;
 	if((numFrames[j].address == oneFrame.address) && (numFrames[j].read_write == oneFrame.read_write) == 1){
 // if address equal and read_write, swap value: o -> n -> m
            numFrames[j] = oneFrame;
@@ -196,8 +199,8 @@ void rdm(char* tracefile, int nframes, char bugtype){
 	   morFrames[j] = numFrames[j];		// then keep assign numF into morF
 	   countR++;
       }//}
-	i = 0;
-     } else {
+//	i = 0;
+      else {
 	numFrames[i] = oneFrame;
 	if(numFrames[i].read_write == W){
 	   numFrames[i].dirty = 1;
