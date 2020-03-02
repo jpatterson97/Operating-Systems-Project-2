@@ -58,8 +58,9 @@ void fifo(char* tracefile, int nframes){
 	unsigned addr;
 	char rw;
 	//pointer to the first element of frame array
-	//p = pg;
+	struct Frame *p = NULL;
 	struct Frame page_table[nframes];
+	p=page_table;
 	FILE *file;
 	file = fopen(tracefile, "r");
 	if(file == NULL)
@@ -109,34 +110,31 @@ void fifo(char* tracefile, int nframes){
 				}//if all of them are full
 				else{
 					//go to where pointer is (in beginning it should be first frame)
-					//go to where pointer is
+					p= page_table;
 					//if dirty bit of that frame is dirty add to write counter
 					if (page_table[i].dirty == 1){
 						writecount ++;
 					}
 					//add to read counter
 					readcount ++;
-					//if pointer is not at the last frame move pointer to next frame 
-					//if (pointer is not at the last frame){
-					//	p++;
-					//}
-					//if pointer is at last frame move it back to beginning
-					//else{
-					//	p goes back to beginning (page_table[0])
-					//}			  
+					//if pointer is not at the last frame move pointer to next frame and if it is then go back to the beginning
+					if(p < nframes){
+						p++;
+					}
+					else{
+						p=page_table;
+					}			  
 				}
 			}
 		}
 		//reset found back to 0 for the next address
 		found =0;
 	}
-	fclose(file);
-//printf("address: %x \n", numFrames[0].address);
-  // printf("action: %c \n", numFrames[0].read_write);	
-   printf("total memory frames: %d\n", nframes);
-   printf("events in trace: %d\n", numLines);
-   printf("total disk reads:  %d\n", readcount);
-   printf("total disk writes: %d\n", writecount);
+	fclose(file);	
+   printf("Total Memory Frames: %d\n", nframes);
+   printf("Events in Trace: %d\n", numLines);
+   printf("Total Disk Reads:  %d\n", readcount);
+   printf("Total Disk Writes: %d\n", writecount);
 }
 
 void rdm(){
