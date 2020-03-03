@@ -7,8 +7,8 @@ memsim: memsim.o
 	$(CC) $(CFLAGS) -o memsim memsim.o
 	$(RM) memsim.o
 
-memory_sim.o: memory_sim.c
-	$(CC) $(CFLAGS) -c memory_sim.c
+memory_sim.o: memsim.c
+	$(CC) $(CFLAGS) -c memsim.c
 
 clean:
 	$(RM) *.o *~ memsim
